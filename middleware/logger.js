@@ -1,7 +1,6 @@
 
-const time = new Date();
-const timestamp = time.getDate() +"-"+ (time.getMonth() + 1 ) +"-"+ time.getFullYear() +" "+ time.getHours() +":"+ time.getMinutes() +":"+ time.getSeconds()
- 
+const timestamp = new Date();
+
 /*
  * Logger - Console
  * @param {*} req 
