@@ -11,4 +11,6 @@ const api = express.Router();
 
 api.get('/item/items', itemController.getItems);
 
+api.post('/item', itemController.createItem);
+
 module.exports = api;
