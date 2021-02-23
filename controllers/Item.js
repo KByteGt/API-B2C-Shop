@@ -11,7 +11,7 @@ const { rdb } = require('../services/firebase/firebase');
  */
 
 exports.getItems = (req, res, next) => {
-    rdb.ref('products').once('value', (snapshot) => {
+    rdb.ref('items').once('value', (snapshot) => {
         let items = snapshot.val();
 
         //Transform object in to array
