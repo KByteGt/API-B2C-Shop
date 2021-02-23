@@ -24,7 +24,21 @@ exports.getItems = (req, res, next) => {
 }
 
 exports.createItem = (req, res, next) => {
-    const newItem = {}
+    const newItem = {
+        "name": req.body.name,
+        "description": req.body.description,
+        "type": req.body.type,
+        "rarity": req.body.rarity,
+        "series": req.body.series,
+        "cost": req.body.cost,
+        "imgIcon": req.body.imgIcon,
+        "imgFeatured": req.body.imgFeatured,
+        "avgStars": 0,
+        "firstOccurrences": "",
+        "lastOccurrences": "",
+        "occurrences": 0,
+        "isNew": true
+    }
 
     rdb.ref('items').push(newItem)
         .then( (ref) => {
