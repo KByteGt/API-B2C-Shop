@@ -1,6 +1,8 @@
 
-const moment = require('moment');
-/**
+const time = new Date();
+const timestamp = time.getDate() +"-"+ (time.getMonth + 1 ) +"-"+ time.getFullYear() +" "+ time.getHours() +":"+ time.getMinutes() +":"+ time.getSeconds()
+ 
+/*
  * Logger - Console
  * @param {*} req 
  * @param {*} res 
@@ -8,6 +10,6 @@ const moment = require('moment');
  */
 
 exports.console = (req, res, next) => {
-    console.log(req.protocol+ '://'+ req.get('host')+req.originalUrl+" - "+moment().format());
+    console.log(req.protocol+ '://'+ req.get('host')+req.originalUrl+" - "+ timestamp);
     next();
 }
