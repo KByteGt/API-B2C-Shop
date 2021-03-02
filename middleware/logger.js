@@ -1,4 +1,4 @@
-
+const config = require('../config');
 const timestamp = new Date();
 
 /*
@@ -9,6 +9,7 @@ const timestamp = new Date();
  */
 
 exports.console = (req, res, next) => {
-    console.log(req.protocol+ '://'+ req.get('host')+req.originalUrl+" - "+ timestamp);
+    console.log(config.getDir + " - " + timestamp);
+    //console.log(req.protocol+ '://'+ req.get('host')+req.originalUrl+" - "+ timestamp);
     next();
 }
