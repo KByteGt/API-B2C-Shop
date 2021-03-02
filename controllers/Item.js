@@ -14,15 +14,29 @@ const { rdb } = require('../services/firebase/firebase');
   */
 
 exports.createItem = (req, res, next) => {
+    const name = req.body.name;
+    const description = req.body.description;
+    const type = req.body.type;
+    const rarity = req.body.rarity;
+    const series = req.body.series;
+    const cost = parseFloat(req.body.cost);
+    const imgIcon = req.file;
+    //const imgFeatured = req.body.imgFeatured;
+
+    if(!imagIcon || name == '' || (cost || -1) <= 0) 
+        return res.status(402).json({message: 'Error al agregar el item'});
+    
+    const imgaIconUrl = (image)
+
     const newItem = {
-        "name": req.body.name,
-        "description": req.body.description,
-        "type": req.body.type,
-        "rarity": req.body.rarity,
-        "series": req.body.series,
-        "cost": parseFloat(req.body.cost),
-        "imgIcon": req.body.imgIcon,
-        "imgFeatured": req.body.imgFeatured,
+        "name": name,
+        "description": description,
+        "type": type,
+        "rarity": rarity,
+        "series": series,
+        "cost": cost,
+        "imgIcon": imgIconUrl,
+        "imgFeatured": imgIconUrl,
         "avgStars": 0,
         "firstOccurrences": "",
         "lastOccurrences": "",
