@@ -10,8 +10,8 @@ const logger = require('./middleware/logger');
 const config = require('./config');
 
 //DB connections
-const mongo = require('./services/mongodb/mongodb').connect;
-const firebase = require('./services/firebase/firebase').connect;
+const mongoConnect = require('./services/mongodb/mongodb').connect;
+const firebaseConnect = require('./services/firebase/firebase').connect;
 
 //Routes
 const api = require('./web/api');
@@ -39,7 +39,10 @@ app.use('/', (req, res) => {
     res.status(400).json({'msg': 'Invalid route'});
 })
 
-mongo( () => {
+//Make DB connections
+firebaseConnect();
+
+mongoConnect( () => {
     app.listen(config.server.port, config.server.ip, () => console.log('Server start at: '+ config.server.domain+":"+config.server.port));
 });
 
