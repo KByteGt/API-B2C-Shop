@@ -9,6 +9,10 @@ const logger = require('./middleware/logger');
 //Config
 const config = require('./config');
 
+//DB connections
+const mongo = require('./services/mongodb/mongodb').connect;
+const firebase = require('./services/firebase/firebase').connect;
+
 //Routes
 const api = require('./web/api');
 
@@ -26,7 +30,6 @@ app.use((req, res, next) => {
     next();
 })
 app.use(logger.console);
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 // All API routes
@@ -36,4 +39,7 @@ app.use('/', (req, res) => {
     res.status(400).json({'msg': 'Invalid route'});
 })
 
-app.listen(config.server.port, config.server.ip, () => console.log('Server start at: '+ config.server.domain+":"+config.server.port));
+mongo( () => {
+    app.listen(config.server.port, config.server.ip, () => console.log('Server start at: '+ config.server.domain+":"+config.server.port));
+});
+
