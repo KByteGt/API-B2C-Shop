@@ -9,7 +9,7 @@ const api = express.Router();
  * /api/item/items
  */
 
-api.get('/item/items', itemController.getItems);
+//api.get('/item/items', itemController.getItems);
 
 api.post('/item', itemController.createItem);
 

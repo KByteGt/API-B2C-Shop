@@ -10,11 +10,12 @@ const logger = require('./middleware/logger');
 const config = require('./config');
 
 //DB connections
-const mongoConnect = require('./services/mongodb/mongodb').connect;
+//const mongoConnect = require('./services/mongodb/mongodb').connect;
 const firebaseConnect = require('./services/firebase/firebase').connect;
 
 //Routes
 const api = require('./web/api');
+const { Console } = require('console');
 
 //Express
 const app = express();
@@ -22,7 +23,7 @@ const app = express();
 // Middlewares
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-app.use(multer({storage: config.fileStorage, fileFilter: config.fileFilter}).single('image'));
+app.use(multer({storage: config.fileStorage, fileFilter: config.fileFilter}).single('imgIcon'));
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods','GET, POST, DELETE, PATCH, UPDATE');
@@ -40,9 +41,15 @@ app.use('/', (req, res) => {
 })
 
 //Make DB connections
+console.log(" ... Conecting FireBase ...")
 firebaseConnect();
+console.log(" ... Starting server ...")
+app.listen(config.server.port, config.server.ip, () => console.log('Server start at: '+ config.server.domain+":"+config.server.port));
 
+/*
 mongoConnect( () => {
+    console.log(" ... Conecting mongoDB ...")
     app.listen(config.server.port, config.server.ip, () => console.log('Server start at: '+ config.server.domain+":"+config.server.port));
 });
+*/
 
