@@ -63,7 +63,49 @@ exports.readItem = (req, res, next) => {
 }
 
 exports.updateItem = (req, res, next) => {
-    res.status(200).json({"message": "Update Item method"});
+    const itemId = req.params.id;
+    let imgUrl = "";
+
+    const cost = parseFloat(req.body.cost);
+    const img = req.file;
+    const avgStars = parseFloat(req.body.avgStars);
+    const occurrences = parseInt(req.body.occurrences);
+    const isNew = (req.body.isNew == 'true');
+    const stock = parseInt(req.body.stock);
+
+    if(img){
+        const imgPath = (img.path).replace(/public\\/, '').replace('\\','/');
+        req.body.imgIcon = imgPath
+        req.body.imgFeatured = imgPath
+        imgUrl = getDir +"/"+ img; 
+    }
+
+    req.body.cost = cost;
+    req.body.avgStars = avgStars;
+    req.body.occurrences = occurrences;
+    req.body.isNew = isNew;
+    req.body.stock = stock;
+
+    const database = firebaseDB();
+
+    database.ref('items').child(itemId).update({...req.body})
+        .then( () => {
+            if(req.body.imgIcon){
+                req.body.imgIcon = imgUrl 
+                req.body.imgFeatured = imgUrl
+            }
+
+            res.status(200).json({
+                id: itemId,
+                ...req.body
+            })
+        })
+        .catch( (err) => {
+            console.log(err)
+            res.status(401).json({
+                message: "Error al actualizar el Item [" + itemId +"]"
+            })
+        });
 }
 
 exports.deleteItem = (req, res, next) => {
