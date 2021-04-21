@@ -94,17 +94,25 @@ exports.getItems = (req, res, next) => {
 }
 
 exports.getPrice = (req, res, next) => {
-    res.status(200).json({"message": "Price Item method"});
+    const itemId = req.params.id;
+
+    const database = firebaseDB();
+
+    database.ref('items').child(itemId).once('value', (snapshot) => {
+        item = snapshot.val();
+        cost = 0;
+
+        if(item) cost = item.cost
+
+        res.status(200).json({
+            item: {
+                id: itemId,
+                cost: cost
+            }
+        })
+    });
 }
 
-/**
- * GET
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
- * 
- * @returns JSON - list of items
- */
 /*
 exports.readItem = (req, res, next) => {
     const itemId = req.params.itemId;
