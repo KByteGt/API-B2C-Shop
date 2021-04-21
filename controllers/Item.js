@@ -1,9 +1,9 @@
-//const { rdb } = require('../services/firebase/firebase');
-
+const { getDir } = require('../config');
+const firebaseDB = require('../services/firebase/firebase').getDB;
 const Item = require('../models/Item');
 
 /**
- * CRUD - Items
+ * CRUD - Items Create, Read, Update & Delete
  * 
  */
 
@@ -30,19 +30,58 @@ exports.createItem = (req, res, next) => {
     const isNew = (req.body.isNew == 'true');
     const stock = parseInt(req.body.stock);
 
-    //console.log(req.body);
-    //console.log(req.file);
-
     if(!imgIcon || name == '' || (cost || -1) <= 0 || (stock || -1) <= 0) 
-        return res.status(402).json({message: 'Error al agregar el item'});
+        return res.status(404).json({message: 'Error al agregar el item'});
     
     const imgIconUrl = (imgIcon.path).replace(/public\\/, '').replace('\\','/');
-    //console.log(imgIconUrl);
 
     const newItem = new Item(name, description, type, rarity, series, cost, imgIconUrl, imgIconUrl,avgStars,firstOccurrences, lastOccurrences, occurrences, isNew, stock);
     newItem.saveFirebase()
         .then( (response) => res.status(200).json(response))
         .catch( (error) => res.status(402).json({message: error}));
+}
+
+exports.readItem = (req, res, next) => {
+    const itemId = req.params.id;
+    
+    const database = firebaseDB();
+    
+    database.ref('items').child(itemId).once('value', (snapshot) => {
+        let item = snapshot.val();
+
+        if(item != null){
+            item.imgFeatured = getDir +"/"+ item.imgFeatured
+            item.imgIcon = getDir +"/"+ item.imgIcon
+
+            item = {id: itemId, ...item}
+
+            res.status(200).json({
+                item: {...item}
+            })
+        } else {
+            res.status(404).json({
+                "message": "Item ["+itemId+"] don't found..."
+            })
+        }
+    });
+}
+
+exports.updateItem = (req, res, next) => {
+    res.status(200).json({"message": "Update Item method"});
+}
+
+exports.deleteItem = (req, res, next) => {
+    res.status(200).json({"message": "Delete Item method"});
+}
+
+exports.getItems = (req, res, next) => {
+    console.log("Get Items method")
+    
+    res.status(200).json({"message": "Get Items method"});
+}
+
+exports.getPrice = (req, res, next) => {
+    res.status(200).json({"message": "Price Item method"});
 }
 
 /**

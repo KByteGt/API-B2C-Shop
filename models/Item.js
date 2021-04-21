@@ -1,6 +1,6 @@
 const { getDir } = require('../config');
-const mongo = require('mongodb');
-const mongoDB = require('../services/mongodb/mongodb').getDB;
+//const mongo = require('mongodb');
+//const mongoDB = require('../services/mongodb/mongodb').getDB;
 const firebaseDB = require('../services/firebase/firebase').getDB;
 
  /**
@@ -60,6 +60,7 @@ module.exports = class Item {
      * @param {*} lastOccurrences 
      * @param {*} occurrences 
      * @param {*} isNew 
+     * @param {*} stock 
      * @param {*} id 
      */
     constructor(name, description, type, rarity, series, cost, imgIcon, imgFeatured, avgStars, firstOccurrences, lastOccurrences, occurrences, isNew, stock, id){
@@ -183,14 +184,7 @@ module.exports = class Item {
         });
     }
 
-    updateFirebase(){
 
-    }    
-
-    getByIdFirebase(){
-
-    }
-    
     getAllFirebase(){
         const database = firebaseDB();
 
@@ -201,7 +195,7 @@ module.exports = class Item {
                         items[key].imgIcon = getDir + "/" + items[key].imgIcon;
                         items[key].imgFeatured = getDir + "/" + items[key].imgFeatured;
                         return ({ id: key, ...products[key] })
-                    });
+                });
                 
                 items = items || [];
                 res.status(200).json({
@@ -209,22 +203,20 @@ module.exports = class Item {
                 });
             });
 
+            /*
             rdb.ref('items')
                 .once('value', (snapshot) => {
                     let items = snapshot.val();
 
-        //Transform object in to array
-        items = Object.keys(items).map(key => ({id: key, ...items[key]}));
+                //Transform object in to array
+                items = Object.keys(items).map(key => ({id: key, ...items[key]}));
 
-        res.status(200).json({
-            items
-        })
-    });
+                res.status(200).json({
+                    items
+                })
+            });
+            */
         });
-    }
-
-    deleteFirebase(){
-
     }
 
 }
