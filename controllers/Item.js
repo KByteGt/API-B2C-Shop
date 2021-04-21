@@ -109,7 +109,13 @@ exports.updateItem = (req, res, next) => {
 }
 
 exports.deleteItem = (req, res, next) => {
-    res.status(200).json({"message": "Delete Item method"});
+    const itemId = req.params.id;
+
+    const database = firebaseDB();
+
+    database.ref('items').child(itemId).remove()
+        .then( () => res.status(200).json({message: "Item eliminado con éxito!!!"}))
+        .catch( () => res.status(401).json({message: "Error al eliminar el item ["+itemId+"]"}))
 }
 
 exports.getItems = (req, res, next) => {
