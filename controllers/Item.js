@@ -49,20 +49,16 @@ exports.readItem = (req, res, next) => {
     database.ref('items').child(itemId).once('value', (snapshot) => {
         let item = snapshot.val();
 
-        if(item != null){
+        if(item){
             item.imgFeatured = getDir +"/"+ item.imgFeatured
             item.imgIcon = getDir +"/"+ item.imgIcon
 
             item = {id: itemId, ...item}
-
-            res.status(200).json({
-                item: {...item}
-            })
-        } else {
-            res.status(404).json({
-                "message": "Item ["+itemId+"] don't found..."
-            })
         }
+
+        res.status(200).json({
+            item
+        })
     });
 }
 
@@ -75,9 +71,26 @@ exports.deleteItem = (req, res, next) => {
 }
 
 exports.getItems = (req, res, next) => {
-    console.log("Get Items method")
     
-    res.status(200).json({"message": "Get Items method"});
+    const database = firebaseDB();
+    
+    database.ref('items').once('value', (snapshot) => {
+        let items = snapshot.val();
+
+        if(items){
+            items = Object.keys(items).map( key => {
+                items[key].imgFeatured = getDir +"/"+ items[key].imgFeatured
+                items[key].imgIcon = getDir +"/"+ items[key].imgIcon
+
+                return ({id: key, ...items[key]})
+            })
+        } 
+
+        items = items || [];
+        res.status(200).json({
+            items
+        })
+    });
 }
 
 exports.getPrice = (req, res, next) => {
