@@ -161,6 +161,30 @@ exports.getPrice = (req, res, next) => {
     });
 }
 
+exports.readItemPopular = (req, res, next) => {
+    const itemId = req.params.id;
+    
+    const database = firebaseDB();
+    
+    database.ref('items').limitToFirst(5).on('value', (snapshot) => {
+        let items = snapshot.val();
+
+        if(items){
+            items = Object.keys(items).map( key => {
+                items[key].imgFeatured = getDir +"/"+ items[key].imgFeatured
+                items[key].imgIcon = getDir +"/"+ items[key].imgIcon
+
+                return ({id: key, ...items[key]})
+            })
+        } 
+
+        items = items || [];
+        res.status(200).json({
+            items
+        })
+    });
+}
+
 /*
 exports.readItem = (req, res, next) => {
     const itemId = req.params.itemId;

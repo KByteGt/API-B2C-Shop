@@ -15,5 +15,6 @@ api.get('/item/:id', itemController.readItem);
 api.put('/item/:id', itemController.updateItem);
 api.delete('/item/:id', itemController.deleteItem);
 api.get('/item/price/:id', itemController.getPrice);
+api.get('/items/popular', itemController.readItemPopular);
 
 module.exports = api;
