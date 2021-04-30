@@ -153,10 +153,8 @@ exports.getPrice = (req, res, next) => {
         if(item) cost = item.cost
 
         res.status(200).json({
-            item: {
-                id: itemId,
-                cost: cost
-            }
+            id: itemId,
+            cost: cost
         })
     });
 }
