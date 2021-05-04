@@ -36,14 +36,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 // All API routes
 app.use('/api', api);
 
-app.use('/', (req, res) => {
-    res.status(400).json({'msg': 'Invalid route'});
-})
-
 //Make DB connections
 console.log(" ... Conecting FireBase ...")
 firebaseConnect();
 console.log(" ... Starting server ...")
+
+app.use('/*', (req, res) => {
+    //res.status(400).json({'msg': 'Invalid route'});
+    res.sendFile(path.join(__dirname, '/client/build/index.html'))
+});
+
 app.listen(config.server.port, config.server.ip, () => console.log('Server start at: '+ config.server.domain+":"+config.server.port));
 
 /*
