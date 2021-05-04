@@ -33,7 +33,10 @@ exports.createItem = (req, res, next) => {
     if(!imgIcon || name == '' || (cost || -1) <= 0 || (stock || -1) <= 0) 
         return res.status(404).json({message: 'Error al agregar el item'});
     
-    const imgIconUrl = (imgIcon.path).replace(/public\\/, '').replace('\\','/');
+    let imgIconUrl = (imgIcon.path).replace(/public\\/, '').replace('\\','/');
+    if(process.env.NODE_ENV == 'production'){
+        imgIconUrl = (imgIcon.path).replace(/public/,'').replace('\\','/');
+    }
 
     const newItem = new Item(name, description, type, rarity, series, cost, imgIconUrl, imgIconUrl,avgStars,firstOccurrences, lastOccurrences, occurrences, isNew, stock);
     newItem.saveFirebase()
@@ -74,7 +77,10 @@ exports.updateItem = (req, res, next) => {
     const stock = parseInt(req.body.stock);
 
     if(img){
-        const imgPath = (img.path).replace(/public\\/, '').replace('\\','/');
+        let imgPath = (img.path).replace(/public\\/, '').replace('\\','/');
+        if(process.env.NODE_ENV == 'production'){
+            imgPath = (img.path).replace(/public/,'').replace('\\','/');
+        }
         req.body.imgIcon = imgPath
         req.body.imgFeatured = imgPath
         imgUrl = getDir +"/"+ img; 
