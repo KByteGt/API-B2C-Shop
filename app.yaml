@@ -1,5 +1,5 @@
 #Google Cloud Config
-service: b2c-shop-api
+#service: b2c-shop-api
 runtime: nodejs
 env: flex
 

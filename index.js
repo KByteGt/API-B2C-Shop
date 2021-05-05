@@ -20,6 +20,8 @@ const { Console } = require('console');
 //Express
 const app = express();
 
+app.use(express.static(path.join(__dirname, '/client/build/')));
+
 // Middlewares
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -41,7 +43,7 @@ console.log(" ... Conecting FireBase ...")
 firebaseConnect();
 console.log(" ... Starting server ...")
 
-app.use('/*', (req, res) => {
+app.get('/*', (req, res) => {
     //res.status(400).json({'msg': 'Invalid route'});
     res.sendFile(path.join(__dirname, '/client/build/index.html'))
 });

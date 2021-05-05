@@ -5,7 +5,7 @@ if(process.env.NODE_ENV == 'production'){
     {
         exports.server = {
             schema: 'https',
-            domain: 'localhost',
+            domain: 'b2c-shop-api-dot-b2c-shop-fortnite.uc.r.appspot.com',
             ip: process.env.IP,
             port: process.env.PORT || 8080,
         }
