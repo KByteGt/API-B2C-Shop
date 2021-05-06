@@ -169,7 +169,7 @@ exports.readItemPopular = (req, res, next) => {
     const itemId = req.params.id;
     
     const database = firebaseDB();
-    
+    //database.ref('items).OrderByChile('category').equalTo('Marvel').on()
     database.ref('items').limitToFirst(5).on('value', (snapshot) => {
         let items = snapshot.val();
 

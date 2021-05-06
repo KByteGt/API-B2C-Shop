@@ -17,7 +17,7 @@ exports.server = {
 const type = ['image/png', 'image/jpeg', 'image/jpg'];
 const publicDir = 'public/img';
 
-exports.getDir = (process.env.NODE_ENV == 'production') ? "https://" + domain  : "http://127.0.0.1:" + process.env.PORT || 2500;
+exports.getDir = (process.env.NODE_ENV == 'production') ? "https://" + domain  : "http://127.0.0.1";
 
 exports.fileStorage = multer.diskStorage({
     destination: (req, file, cb) => {
